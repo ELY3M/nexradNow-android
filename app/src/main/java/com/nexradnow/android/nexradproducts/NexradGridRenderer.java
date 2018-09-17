@@ -223,9 +223,7 @@ Color,80,132,253,255,68,118,143
 Color,90,161,101,73,118,15,6
 Color,95,118,15,6,118,15,6
 
-*/
 
-    static int[] colorTable = {
             Color.rgb(30,30,30), // -33 db
             Color.rgb(71,71,71), // 0 db
             Color.rgb(18,20,23), // 3 db
@@ -273,6 +271,124 @@ Color,95,118,15,6,118,15,6
             Color.rgb(161,101,73), // 90 db
             Color.rgb(118,15,6), // 95 db
 
+*/
+
+    static int[] colorTable = {
+            Color.rgb(30,30,30), // -33 db
+            /*
+            Color.rgb(30,30,30), // -10 db
+            Color.rgb(30,30,30), // -9 db
+            Color.rgb(30,30,30), // -8 db
+            Color.rgb(30,30,30), // -7 db
+            Color.rgb(30,30,30), // -6 db
+            Color.rgb(30,30,30), // -5 db
+            Color.rgb(30,30,30), // -4 db
+            Color.rgb(30,30,30), // -3 db
+            Color.rgb(30,30,30), // -2 db
+            Color.rgb(30,30,30), // -1 db
+            */
+            Color.rgb(71,71,71), // 0 db
+            Color.rgb(71,71,71), // 1 db
+            Color.rgb(71,71,71), // 2 db
+            Color.rgb(18,20,23), // 3 db
+            Color.rgb(22,25,30), // 4 db
+            Color.rgb(25,30,38), // 5 db
+            Color.rgb(27,33,44), // 6 db
+            Color.rgb(28,36,51), // 7 db
+            Color.rgb(28,37,58), // 8 db
+            Color.rgb(27,39,65), // 9 db
+            Color.rgb(31,47,74), // 10 db
+            Color.rgb(37,56,84), // 11 db
+            Color.rgb(43,67,95), // 12 db
+            Color.rgb(49,78,106), // 13 db
+            Color.rgb(56,91,118), // 14 db
+            Color.rgb(64,104,130), // 15 db
+            Color.rgb(71,118,142), // 16 db
+            Color.rgb(79,133,155), // 17 db
+            Color.rgb(88,149,169), // 18 db
+            Color.rgb(92,157,174), // 19 db
+            Color.rgb(60,173,110), // 20 db
+            Color.rgb(42,175,72), // 21 db
+            Color.rgb(37,163,62), // 22 db
+            Color.rgb(31,150,51), // 23 db
+            Color.rgb(26,137,40), // 24 db
+            Color.rgb(21,125,30), // 25 db
+            Color.rgb(16,112,19), // 26 db
+            Color.rgb(11,100,9), // 27 db
+            Color.rgb(59,130,7), // 28 db
+            Color.rgb(107,161,5), // 29 db
+            Color.rgb(155,191,3), // 30 db
+            Color.rgb(203,222,1), // 31 db
+            Color.rgb(252,253,0), // 32 db
+            Color.rgb(244,243,0), // 33 db
+            Color.rgb(237,233,0), // 34 db
+            Color.rgb(230,223,0), // 35 db
+            Color.rgb(222,213,0), // 36 db
+            Color.rgb(215,203,0), // 37 db
+            Color.rgb(208,193,0), // 38 db
+            Color.rgb(200,183,0), // 39 db
+            Color.rgb(250,148,0), // 40 db
+            Color.rgb(250,148,0), // 41 db
+            Color.rgb(250,148,0), // 42 db
+            Color.rgb(250,148,0), // 43 db
+            Color.rgb(250,148,0), // 44 db
+            Color.rgb(250,148,0), // 45 db
+            Color.rgb(250,148,0), // 46 db
+            Color.rgb(250,148,0), // 47 db
+            Color.rgb(250,148,0), // 48 db
+            Color.rgb(250,148,0), // 49 db
+            Color.rgb(249,35,11), // 50 db
+            Color.rgb(249,35,11), // 51 db
+            Color.rgb(249,35,11), // 52 db
+            Color.rgb(249,35,11), // 53 db
+            Color.rgb(249,35,11), // 54 db
+            Color.rgb(249,35,11), // 55 db
+            Color.rgb(249,35,11), // 56 db
+            Color.rgb(249,35,11), // 57 db
+            Color.rgb(249,35,11), // 58 db
+            Color.rgb(249,35,11), // 59 db
+            Color.rgb(202,153,180), // 60 db
+            Color.rgb(202,153,180), // 61 db
+            Color.rgb(202,153,180), // 62 db
+            Color.rgb(202,153,180), // 63 db
+            Color.rgb(202,153,180), // 64 db
+            Color.rgb(202,153,180), // 65 db
+            Color.rgb(202,153,180), // 66 db
+            Color.rgb(202,153,180), // 67 db
+            Color.rgb(202,153,180), // 68 db
+            Color.rgb(202,153,180), // 69 db
+            Color.rgb(154,36,224), // 70 db
+            Color.rgb(154,36,224), // 71 db
+            Color.rgb(154,36,224), // 72 db
+            Color.rgb(154,36,224), // 73 db
+            Color.rgb(154,36,224), // 74 db
+            Color.rgb(154,36,224), // 75 db
+            Color.rgb(154,36,224), // 76 db
+            Color.rgb(154,36,224), // 77 db
+            Color.rgb(154,36,224), // 78 db
+            Color.rgb(154,36,224), // 79 db
+            Color.rgb(132,253,255), // 80 db
+            Color.rgb(132,253,255), // 81 db
+            Color.rgb(132,253,255), // 82 db
+            Color.rgb(132,253,255), // 83 db
+            Color.rgb(132,253,255), // 84 db
+            Color.rgb(132,253,255), // 85 db
+            Color.rgb(132,253,255), // 86 db
+            Color.rgb(132,253,255), // 87 db
+            Color.rgb(132,253,255), // 88 db
+            Color.rgb(132,253,255), // 89 db
+            Color.rgb(161,101,73), // 90 db
+            Color.rgb(161,101,73), // 91 db
+            Color.rgb(161,101,73), // 92 db
+            Color.rgb(161,101,73), // 93 db
+            Color.rgb(161,101,73), // 94 db
+            Color.rgb(118,15,6), // 95 db
+            Color.rgb(118,15,6), // 96 db
+            Color.rgb(118,15,6), // 97 db
+            Color.rgb(118,15,6), // 98 db
+            Color.rgb(118,15,6), // 99 db
+            //Color.rgb(118,15,6), // 100 db
+
 
     };
 
@@ -299,7 +415,7 @@ Color,95,118,15,6,118,15,6
 
     protected int getColorFromTable(float power)
     {
-        int index = ((int)(power * 100.0)/1)-1;
+        int index = ((int)(power * 100.0))-1;
         if (index < 0) { index = 0; }
         if (index >= colorTable.length) { index = colorTable.length-1;}
         return colorTable[index];
