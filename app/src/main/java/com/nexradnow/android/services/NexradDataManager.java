@@ -171,6 +171,7 @@ public class NexradDataManager {
         return stationList;
     }
 
+    ///TODO  we need to use http instead FTP!  FTP is blocked on wifi at my work!
     public List<NexradProduct> getNexradProducts(String productCode, NexradStation station, int ageMaxMinutes) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(ctx);
         List<NexradProduct> results = new ArrayList<NexradProduct>();

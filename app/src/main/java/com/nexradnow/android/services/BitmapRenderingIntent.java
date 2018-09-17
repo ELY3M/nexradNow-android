@@ -240,7 +240,7 @@ public class BitmapRenderingIntent extends IntentService {
                                    float displayDensity) {
         Paint    mapPaint = new Paint();
         mapPaint.setStrokeWidth(scalePixels(2, displayDensity));
-        mapPaint.setColor(Color.GRAY);
+        mapPaint.setColor(Color.WHITE); //was GRAY
         mapPaint.setAlpha(50);
         Point from = null;
         Point to = null;
@@ -315,7 +315,7 @@ public class BitmapRenderingIntent extends IntentService {
             stationPaint.setStyle(Paint.Style.FILL);
             stationPaint.setStrokeWidth(defaultStrokeWidth);
         }
-        stationPaint.setColor(Color.BLACK);
+        stationPaint.setColor(Color.CYAN);
         stationPaint.setAlpha(180);
         canvas.drawText(station.getIdentifier(),
                 stationPoint.x + scalePixels(12, displayDensity), stationPoint.y + scalePixels(4, displayDensity), brush);

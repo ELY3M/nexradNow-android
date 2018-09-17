@@ -27,14 +27,14 @@
         android:entryValues="@array/rangeKm"
         android:title="@string/pref_nexrad_stationdistance_title"
         android:summary="@string/pref_nexrad_stationdistance_summ"
-        android:defaultValue="160"/>
+        android:defaultValue="@string/pref_nexrad_stationdistance_default" />
 
     <ListPreference
         android:key="pref_nexrad_product"
         android:entries="@array/nexradProductDescriptions"
         android:entryValues="@array/nexradProductCodes"
-        android:title="Nexrad Product to Display"
-        android:summary="Select specific Nexrad output for display"
-        android:defaultValue="p38cr" />
+        android:title="@string/pref_nexrad_product_title"
+        android:summary="@string/pref_nexrad_product_summ"
+        android:defaultValue="@string/pref_nexrad_product_default" />
 
 </PreferenceScreen>

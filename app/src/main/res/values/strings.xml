@@ -28,8 +28,16 @@
 
     <string name="pref_nexrad_emailaddress_title">Email Address for FTP Login Only</string>
     <string name="pref_nexrad_emailaddress_summ">Provide email address for use during FTP server login</string>
-    <string name="pref_nexrad_emailaddress_default"></string>
+    <string name="pref_nexrad_emailaddress_default">elym@nexradnow.com</string>
 
     <string name="pref_nexrad_stationdistance_title">Nexrad stations distance</string>
     <string name="pref_nexrad_stationdistance_summ">Include Nexrad stations within this distance of your location</string>
+    <string name="pref_nexrad_stationdistance_default">160</string>
+
+    <string name="pref_nexrad_product_title">Nexrad Product to Display</string>
+    <string name="pref_nexrad_product_summ">Select specific Nexrad output for display</string>
+    <string name="pref_nexrad_product_default">p19r0</string>
+
+
+
 </resources>

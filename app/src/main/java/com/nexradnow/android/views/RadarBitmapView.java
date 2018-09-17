@@ -416,7 +416,7 @@ public class RadarBitmapView extends View implements GestureDetector.OnGestureLi
         int yPos = viewHeight - stampBounds.height() - scalePixels(30);
         roundRect.offsetTo(scalePixels(10),yPos);
         canvas.drawRoundRect(roundRect,scalePixels(10),scalePixels(10),timestampPaint);
-        timestampPaint.setColor(Color.parseColor("black"));
+        timestampPaint.setColor(Color.BLACK);
         timestampPaint.setStyle(Paint.Style.STROKE);
         float defaultStrokeWidth = timestampPaint.getStrokeWidth();
         timestampPaint.setStrokeWidth(scalePixels(2));

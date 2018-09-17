@@ -152,7 +152,7 @@ public class LocationSelectionActivity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView label = new TextView(context);
-            label.setTextColor(Color.BLACK);
+            label.setTextColor(Color.WHITE);
             label.setText(values[position].getIdentifier()+" - "+values[position].getLocation());
             return label;
         }
@@ -161,7 +161,7 @@ public class LocationSelectionActivity extends Activity {
         public View getDropDownView(int position, View convertView,
                                     ViewGroup parent) {
             TextView label = new TextView(context);
-            label.setTextColor(Color.BLACK);
+            label.setTextColor(Color.WHITE);
             label.setText(values[position].getIdentifier()+" - "+values[position].getLocation());
             return label;
         }
