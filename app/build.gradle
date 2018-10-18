@@ -1,15 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         applicationId "com.nexradnow.android.app"
         minSdkVersion 15
-        targetSdkVersion 25
-        versionCode 11
-        versionName "1.0.10"
+        versionCode 12
+        versionName "1.0.12"
         javaCompileOptions {
             annotationProcessorOptions {
                 includeCompileClasspath false
@@ -48,7 +47,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.1.0'
     //compile 'com.android.support:multidex:1.0.3'
     // TODO: add dagger2 DI library and annotation processor
     compile 'com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.3'
@@ -57,6 +56,7 @@ dependencies {
     compile 'org.glassfish:javax.annotation:10.0-b28'
     // For the optional Nullable annotation
     //compile 'com.google.code.findbugs:jsr305:3.0.1'
+    compile 'com.jakewharton:disklrucache:2.0.2'
     // EventBus for inter-component communications
     compile 'de.greenrobot:eventbus:2.4.0'
     // Location services etc
@@ -76,5 +76,6 @@ dependencies {
         exclude group: 'commons-collections', module: 'commons-collections'
     }
     compile 'commons-beanutils:commons-beanutils-core:1.8.3'
+    compile 'com.squareup.picasso:picasso:2.71828'
 }
 

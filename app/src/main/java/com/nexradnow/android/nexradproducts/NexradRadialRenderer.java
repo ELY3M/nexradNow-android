@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.util.Log;
+
 import com.nexradnow.android.exception.NexradNowException;
 import com.nexradnow.android.model.LatLongCoordinates;
 import com.nexradnow.android.model.LatLongScaler;
@@ -21,7 +23,7 @@ import java.util.Collection;
  */
 public abstract class NexradRadialRenderer extends NexradGridRenderer {
 
-    protected static String TAG = "NxRadRenderer";
+    protected static String TAG = "NexradRadialRenderer";
 
     @Override
     public abstract String getProductCode();
@@ -70,8 +72,7 @@ lon2 = lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
     }
 
 
-    public void renderToCanvas(Canvas canvas, NexradProduct product, Paint paint, LatLongScaler scaler, int minFeatureSize,
-                               double safeDistance, NexradStation dataOwner, Collection<NexradStation> otherStations)
+    public void renderToCanvas(Canvas canvas, NexradProduct product, Paint paint, LatLongScaler scaler, int minFeatureSize, double safeDistance, NexradStation dataOwner, Collection<NexradStation> otherStations)
             throws NexradNowException {
         // General flow:
         // Analyze data to find radial array
@@ -125,7 +126,7 @@ lon2 = lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
             LatLongCoordinates origin = new LatLongCoordinates(latOrigin,lonOrigin);
             Path polyPath = new Path();
             // Estimate how big of a "chunk" we need in order to reach our minimum feature size
-            int stepSize = 1;
+            int stepSize = 0; //was 1 //testing
             float distanceForFeature = scaler.distanceForPixels(minFeatureSize);
             while ((gateDistancesMeters[stepSize]<distanceForFeature)&&(stepSize<gateDistancesMeters.length)) {
                 stepSize++;
@@ -145,6 +146,15 @@ lon2 = lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
                     // At this point we know all four points of the polygon. Compute and put in path IFF the value
                     // is a number
                     float cellValue = radialArray.get(angleIndex, gateIndex);
+                    ///TODO DEBUG!!!
+                    /*
+                    if (cellValue < 1) {
+                        Log.i(TAG, "cellValue" + cellValue);
+                    }
+                    if (cellValue > 60) {
+                        Log.i(TAG, "cellValue" + cellValue);
+                    }
+                    */
                     if (stepSize > 1) {
                         for (int searchGateIndex = gateIndex; searchGateIndex < gateIndex+stepSize; searchGateIndex++) {
                             for (int searchAngleIndex = angleIndex; searchAngleIndex < angleIndex+stepSize; searchAngleIndex++) {
@@ -214,10 +224,19 @@ lon2 = lon1 + atan2(sin(θ)*sin(d/R)*cos(lat1), cos(d/R)−sin(lat1)*sin(lat2))
                     }
 
                     // Do the drawing deed.
-                    int color = getColorFromTable(cellValue / 100.0f);
+                    //int color = getColorFromTable(cellValue / 100.0f);
+                    int color = getColorFromTable(cellValue);
+                    ///TODO DEBUG!!!
+                    /*
+                    if (cellValue > 53) {
+                        Log.i(TAG, "cellValue: " + cellValue);
+                        //Log.i(TAG, "color: " + color);
+                        //Log.i(TAG, "colortable: "+colorTable[(int)cellValue]);
+                    }
+                    */
                     productPaint.setColor(color);
 
-                    productPaint.setStrokeWidth(1.5f);
+                    productPaint.setStrokeWidth(1.0f); //was 1.5f
                     productPaint.setStyle(Paint.Style.FILL_AND_STROKE);
                     polyPath.reset();
                     polyPath.moveTo(pt1.x,pt1.y);

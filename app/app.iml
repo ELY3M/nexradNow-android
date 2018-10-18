@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" external.system.module.group="NexradNow" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+<module external.linked.project.id=":app" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android-gradle" name="Android-Gradle">
       <configuration>
@@ -22,7 +22,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7">
     <output url="file://$MODULE_DIR$/build/intermediates/classes/debug" />
     <output-test url="file://$MODULE_DIR$/build/intermediates/classes/test/debug" />
     <exclude-output />
@@ -94,58 +94,63 @@
       <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 26 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
-    <orderEntry type="library" exported="" name="play-services-base-15.0.1" level="project" />
-    <orderEntry type="library" exported="" name="play-services-tasks-15.0.1" level="project" />
-    <orderEntry type="library" exported="" name="jcommander-1.35" level="project" />
-    <orderEntry type="library" exported="" name="cdm-4.5.5" level="project" />
-    <orderEntry type="library" exported="" name="play-services-basement-15.0.1" level="project" />
-    <orderEntry type="library" exported="" name="commons-net-3.3" level="project" />
-    <orderEntry type="library" exported="" name="httpservices-4.5.5" level="project" />
-    <orderEntry type="library" exported="" name="quartz-2.2.0" level="project" />
-    <orderEntry type="library" exported="" name="netcdf4-4.5.5" level="project" />
-    <orderEntry type="library" exported="" name="slf4j-api-1.7.7" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="multidex-instrumentation-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="httpmime-4.2.6" level="project" />
-    <orderEntry type="library" exported="" name="commons-digester-1.8" level="project" />
-    <orderEntry type="library" exported="" name="support-compat-26.1.0" level="project" />
-    <orderEntry type="library" exported="" name="udunits-4.5.5" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-26.1.0" level="project" />
-    <orderEntry type="library" exported="" name="commons-beanutils-core-1.8.3" level="project" />
-    <orderEntry type="library" exported="" name="support-v4-26.1.0" level="project" />
-    <orderEntry type="library" exported="" name="support-fragment-26.1.0" level="project" />
-    <orderEntry type="library" exported="" name="common-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="1_common-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="protobuf-java-2.5.0" level="project" />
-    <orderEntry type="library" exported="" name="support-vector-drawable-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="toothpick-runtime-1.1.3" level="project" />
-    <orderEntry type="library" exported="" name="play-services-places-placereport-15.0.1" level="project" />
-    <orderEntry type="library" exported="" name="jdom2-2.0.4" level="project" />
-    <orderEntry type="library" exported="" name="support-core-ui-26.1.0" level="project" />
-    <orderEntry type="library" exported="" name="support-media-compat-26.1.0" level="project" />
-    <orderEntry type="library" exported="" name="smoothie-1.1.3" level="project" />
-    <orderEntry type="library" exported="" name="support-core-utils-26.1.0" level="project" />
-    <orderEntry type="library" exported="" name="javax.annotation-10.0-b28" level="project" />
-    <orderEntry type="library" exported="" name="c3p0-0.9.1.1" level="project" />
-    <orderEntry type="library" exported="" name="bzip2-0.9.1" level="project" />
-    <orderEntry type="library" exported="" name="jna-4.1.0" level="project" />
-    <orderEntry type="library" exported="" name="toothpick-generated-core-1.1.3" level="project" />
-    <orderEntry type="library" exported="" name="eventbus-2.4.0" level="project" />
-    <orderEntry type="library" exported="" name="jcip-annotations-1.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-location-15.0.1" level="project" />
-    <orderEntry type="library" exported="" name="httpcore-4.2.5" level="project" />
-    <orderEntry type="library" exported="" name="ehcache-core-2.6.2" level="project" />
-    <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
-    <orderEntry type="library" exported="" name="guava-17.0" level="project" />
-    <orderEntry type="library" exported="" name="runtime-1.0.0" level="project" />
-    <orderEntry type="library" exported="" name="joda-time-2.2" level="project" />
-    <orderEntry type="library" exported="" name="multidex-1.0.1" level="project" />
-    <orderEntry type="library" exported="" name="commons-validator-1.4.0" level="project" />
-    <orderEntry type="library" exported="" name="toothpick-1.1.3" level="project" />
-    <orderEntry type="library" exported="" name="shapefilereader-1.0" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="animated-vector-drawable-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.github.stephanenicolas.toothpick:toothpick-runtime:1.1.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-basement-15.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: edu.ucar:httpservices:4.5.5@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.protobuf:protobuf-java:2.5.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:multidex-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.github.stephanenicolas.toothpick:smoothie-1.1.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-media-compat-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-v4-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: c3p0:c3p0:0.9.1.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.okio:okio:1.14.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: javax.inject:javax.inject:1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: android.arch.lifecycle:common:1.0.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.github.stephanenicolas.toothpick:toothpick:1.1.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-vector-drawable-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-core-ui-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: edu.ucar:cdm:4.5.5@jar" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="Gradle: com.android.support:multidex-instrumentation-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-core-utils-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-tasks-15.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-places-placereport-15.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: de.greenrobot:eventbus:2.4.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: net.sf.ehcache:ehcache-core:2.6.2@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.quartz-scheduler:quartz:2.2.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.slf4j:slf4j-api:1.7.7@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:animated-vector-drawable-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: __local_jars__:E.\phonedev\nexradNow-own\app\libs\shapefilereader-1.0.jar:unspecified@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.beust:jcommander:1.35@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: net.java.dev.jna:jna:4.1.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-validator:commons-validator:1.4.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.itadaki:bzip2:0.9.1@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: joda-time:joda-time:2.2@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.apache.httpcomponents:httpcore:4.2.5@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: net.jcip:jcip-annotations:1.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:appcompat-v7-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-fragment-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: android.arch.core:common:1.0.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-base-15.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-annotations:27.1.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.glassfish:javax.annotation:10.0-b28@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:support-compat-26.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.guava:guava:17.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.jakewharton:disklrucache:2.0.2@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.google.android.gms:play-services-location-15.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-digester:commons-digester:1.8@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-io:commons-io:2.4@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.okhttp3:okhttp:3.10.0@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.github.stephanenicolas.toothpick:toothpick-generated-core:1.1.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.android.support:exifinterface-27.1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: edu.ucar:netcdf4:4.5.5@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.apache.httpcomponents:httpmime:4.2.6@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-net:commons-net:3.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: com.squareup.picasso:picasso-2.71828" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-beanutils:commons-beanutils-core:1.8.3@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: edu.ucar:udunits:4.5.5@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.jdom:jdom2:2.0.4@jar" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: android.arch.lifecycle:runtime-1.0.0" level="project" />
   </component>
 </module>

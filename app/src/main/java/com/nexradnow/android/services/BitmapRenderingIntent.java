@@ -2,9 +2,18 @@ package com.nexradnow.android.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.*;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
+
+
 import com.nexradnow.android.app.NexradApp;
 import com.nexradnow.android.app.R;
 import com.nexradnow.android.exception.NexradNowException;
@@ -12,6 +21,10 @@ import com.nexradnow.android.model.*;
 import com.nexradnow.android.nexradproducts.NexradRenderer;
 import com.nexradnow.android.nexradproducts.RendererInventory;
 import com.nexradnow.android.util.NexradNowFileUtils;
+
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.nocrala.tools.gis.data.esri.shapefile.ShapeFileReader;
 import org.nocrala.tools.gis.data.esri.shapefile.header.ShapeFileHeader;
 import org.nocrala.tools.gis.data.esri.shapefile.shape.AbstractShape;
@@ -20,8 +33,16 @@ import org.nocrala.tools.gis.data.esri.shapefile.shape.shapes.AbstractPolyShape;
 import toothpick.Toothpick;
 
 import javax.inject.Inject;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -142,8 +163,7 @@ public class BitmapRenderingIntent extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
-    protected Bitmap computeRegion(Intent intent, LatLongRect region, Rect bitmapSize, NexradUpdate nexradData,
-                                   float displayDensity ) {
+    protected Bitmap computeRegion(Intent intent, LatLongRect region, Rect bitmapSize, NexradUpdate nexradData, float displayDensity ) {
         Bitmap bitmap = createBackingBitmap(bitmapSize);
         if (bitmap == null) {
             // No bitmap created!
@@ -153,6 +173,13 @@ public class BitmapRenderingIntent extends IntentService {
 
         Canvas bitmapCanvas = new Canvas(bitmap);
         Calendar oldestTimestamp = null;
+
+        ///TODO TESTING
+        //drawConusRadar2(bitmapCanvas, region);
+
+        //draw counties first so they are under radar//
+        drawCounties(bitmapCanvas, region, bitmapSize, displayDensity);
+
         Collection<NexradStation> productStations = nexradData.getUpdateProduct()==null?null:nexradData.getUpdateProduct().keySet();
         Map<NexradStation,List<NexradProduct>> nexradProduct = nexradData.getUpdateProduct();
         if ((productStations!=null)&&(!productStations.isEmpty())) {
@@ -173,14 +200,13 @@ public class BitmapRenderingIntent extends IntentService {
                 int percentComplete = (stationIndex*100)/stationCount;
                 String progressMessage = "Rendering ["+percentComplete+"%]";
                 notifyProgress(intent, progressMessage);
-                if ((nexradProduct.get(station) != null)
-                        && (!nexradProduct.get(station).isEmpty())) {
+                if ((nexradProduct.get(station) != null) && (!nexradProduct.get(station).isEmpty())) {
                     Calendar thisTimestamp = nexradData.getUpdateProduct().get(station).get(0).getTimestamp();
                     if ((oldestTimestamp == null) || (thisTimestamp.before(oldestTimestamp))) {
                         oldestTimestamp = thisTimestamp;
                     }
-                    plotProduct(bitmapCanvas, region, bitmapSize, nexradProduct.get(station).get(0),
-                            interStationDistanceMin/2.0, station, containedStations);
+                    //radar
+                    plotProduct(bitmapCanvas, region, bitmapSize, nexradProduct.get(station).get(0), interStationDistanceMin/2.0, station, containedStations);
                 }
             }
             for (NexradStation station : nexradProduct.keySet()) {
@@ -188,25 +214,183 @@ public class BitmapRenderingIntent extends IntentService {
                     continue;
                 }
                 boolean stationHasData = (nexradProduct.get(station) != null) && (!nexradProduct.get(station).isEmpty());
+
                 plotStation(bitmapCanvas, region, bitmapSize, station, stationHasData, displayDensity);
             }
+
+
         } else {
             // No products or empty product set
         }
-        drawMap(bitmapCanvas, region, bitmapSize, displayDensity);
+        drawStates(bitmapCanvas, region, bitmapSize, displayDensity);
 
-        drawHomePoint(bitmapCanvas, region, bitmapSize, nexradData.getCenterPoint(), displayDensity);
+
+        //TODO: FIX location to stay with GPS!!! not move with you when change station
+        //drawHomePoint(bitmapCanvas, region, bitmapSize, nexradData.getCenterPoint());
+        drawHomePoint(bitmapCanvas, region, bitmapSize, nexradData.getCenterPoint());
         Calendar dataTimestamp = oldestTimestamp;
 
         return bitmap;
     }
 
-    private void drawHomePoint(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, LatLongCoordinates location,
-                               float displayDensity) {
+    private void drawHomePoint(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, LatLongCoordinates location) {
         Paint brush = new Paint();
+
         Point locationPoint = scaleCoordinate(location, latLongRect, pixelSize);
-        canvas.drawCircle(locationPoint.x,locationPoint.y,scalePixels(3, displayDensity),brush);
+        //canvas.drawCircle(locationPoint.x,locationPoint.y,scalePixels(3, displayDensity),brush);
+
+        Resources resources = getApplicationContext().getResources();
+        Drawable locationDrawable = resources.getDrawable(R.drawable.location);
+        Bitmap gpsicon = ((BitmapDrawable) locationDrawable).getBitmap();
+        Bitmap gpsiconresized = Bitmap.createScaledBitmap(gpsicon, 63, 63, false);
+        brush.setAntiAlias(true);
+        brush.setSubpixelText(true);
+        canvas.drawBitmap(gpsiconresized, locationPoint.x,locationPoint.y, brush);
+
     }
+
+
+    private void drawConusRadar(Canvas canvas, LatLongRect latLongRect) {
+        Paint brush = new Paint();
+
+
+        Bitmap conusradar=null;
+        try {
+            conusradar = BitmapFactory.decodeStream((InputStream)new URL("https://radar.weather.gov/ridge/Conus/RadarImg/latest_radaronly.gif").getContent());
+        } catch (Exception e) {
+            Log.e(TAG, "CRASHED: ", e);
+        }
+
+        Display display = ((WindowManager) this.getSystemService(this.WINDOW_SERVICE)).getDefaultDisplay();
+        int myheight = display.getHeight();
+        int mywidth = display.getWidth();
+        Log.i(TAG, "Height: " + myheight + ", Width: " + mywidth);
+
+        Bitmap conusradarresize = Bitmap.createScaledBitmap(conusradar, mywidth, myheight, false);
+
+
+        brush.setAntiAlias(true);
+        brush.setSubpixelText(true);
+        canvas.drawBitmap(conusradarresize, Integer.valueOf(gfw5),Integer.valueOf(gfw6), brush);
+
+    }
+
+
+    /*
+*
+
+Each of the RIDGE radar image has a "world file" associated with it.
+A world file is an ASCII text file associated with an image and
+contains the following lines:
+Line 1: x-dimension of a pixel in map units
+Line 2: rotation parameter
+Line 3: rotation parameter
+Line 4: NEGATIVE of y-dimension of a pixel in map units
+Line 5: x-coordinate of center of upper left pixel
+Line 6: y-coordinate of center of upper left pixel
+
+
+* */
+
+    String[] gfw = new String[6];
+    int linecount = -1;
+    String gfw1;
+    String gfw2;
+    String gfw3;
+    String gfw4;
+    String gfw5;
+    String gfw6;
+    private class ReadFileTask extends AsyncTask<String,Integer,Void> {
+
+        protected Void doInBackground(String... params) {
+            String urlgfw = "https:///radar.weather.gov/ridge/Conus/RadarImg/latest_radaronly.gfw";
+            URL url;
+            try {
+                //create url object to point to the file location on internet
+                url = new URL(urlgfw);
+                //make a request to server
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                //get InputStream instance
+                InputStream is = con.getInputStream();
+                //create BufferedReader object
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                String line;
+                //read content of the file line by line
+                while ((line = br.readLine()) != null) {
+                    //Log.i(TAG, line);
+                    int number = ++linecount;
+                    gfw[number] = line;
+                    //Log.i(TAG, number+": "+gfw[number]);
+
+                }
+                gfw1 = gfw[0];
+                gfw2 = gfw[1];
+                gfw3 = gfw[2];
+                gfw4 = gfw[3];
+                gfw5 = gfw[4];
+                gfw6 = gfw[5];
+                Log.i(TAG, "X: "+gfw5);
+                Log.i(TAG, "Y: "+gfw6);
+
+                br.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                //close dialog if error occurs
+            }
+
+            return null;
+
+        }
+    }
+
+    private void drawConusRadar2(Canvas canvas, LatLongRect latLongRect) {
+        Paint brush = new Paint();
+
+        //Point locationPoint = scaleCoordinate(location, latLongRect, pixelSize);
+
+        double maxViewLongitude = latLongRect.right;
+        double minViewLongitude = latLongRect.left;
+        double maxViewLatitude = latLongRect.top;
+        double minViewLatitude = latLongRect.bottom;
+
+        Bitmap conusradar=null;
+        try {
+            conusradar = BitmapFactory.decodeStream((InputStream)new URL("https://radar.weather.gov/ridge/Conus/RadarImg/latest_radaronly.gif").getContent());
+            } catch (Exception e) {
+            Log.e(TAG, "CRASHED: ", e);
+        }
+
+        //String urlgfw = "https://radar.weather.gov/ridge/Conus/RadarImg/latest_radaronly.gfw";
+
+        Display display = ((WindowManager) this.getSystemService(this.WINDOW_SERVICE)).getDefaultDisplay();
+        int myheight = display.getHeight();
+        int mywidth = display.getWidth();
+        Log.i(TAG, "Height: " + myheight + ", Width: " + mywidth);
+        Bitmap conusradarresize = Bitmap.createScaledBitmap(conusradar, mywidth, myheight, false);
+
+
+        ReadFileTask getgfw=new ReadFileTask ();
+        getgfw.execute();
+
+
+/*
+        Line 1: x-dimension of a pixel in map units
+        Line 2: rotation parameter
+        Line 3: rotation parameter
+        Line 4: NEGATIVE of y-dimension of a pixel in map units
+        Line 5: x-coordinate of center of upper left pixel
+        Line 6: y-coordinate of center of upper left pixel
+
+
+*/
+
+        brush.setAntiAlias(true);
+        brush.setSubpixelText(true);
+        canvas.drawBitmap(conusradar, Integer.valueOf(gfw5), Integer.valueOf(gfw6), brush);
+
+    }
+
 
     /**
      * Do some simple bounds checking to see if the polygon might possibly lie within our view window
@@ -236,12 +420,11 @@ public class BitmapRenderingIntent extends IntentService {
 
     }
 
-    private void plotPolygonPoints(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, PointData[] points,
-                                   float displayDensity) {
+    private void plotStates(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, PointData[] points, float displayDensity) {
         Paint    mapPaint = new Paint();
-        mapPaint.setStrokeWidth(scalePixels(2, displayDensity));
+        mapPaint.setStrokeWidth(scalePixels(1, displayDensity)); //was 2
         mapPaint.setColor(Color.WHITE); //was GRAY
-        mapPaint.setAlpha(50);
+        mapPaint.setAlpha(255); //was 50
         Point from = null;
         Point to = null;
         for (PointData eachSrcPoint : points) {
@@ -253,7 +436,24 @@ public class BitmapRenderingIntent extends IntentService {
         }
     }
 
-    private void drawMap(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, float displayDensity) {
+
+    private void plotCounties(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, PointData[] points, float displayDensity) {
+        Paint    mapPaint = new Paint();
+        mapPaint.setStrokeWidth(scalePixels(1, displayDensity)); //was 2
+        mapPaint.setColor(Color.GRAY);
+        mapPaint.setAlpha(255); //was 50
+        Point from = null;
+        Point to = null;
+        for (PointData eachSrcPoint : points) {
+            to = scaleCoordinate(new LatLongCoordinates(eachSrcPoint.getY(), eachSrcPoint.getX()), latLongRect, pixelSize);
+            if (from != null) {
+                canvas.drawLine(from.x,from.y,to.x,to.y,mapPaint);
+            }
+            from = to;
+        }
+    }
+
+    private void drawStates(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, float displayDensity) {
         try {
             InputStream is = this.getApplicationContext().getResources().openRawResource(R.raw.cb_2014_us_state_20m);
             ShapeFileReader sr = new ShapeFileReader(is);
@@ -276,7 +476,7 @@ public class BitmapRenderingIntent extends IntentService {
                     includedShapes++;
                     for (int part = 0; part < polygon.getNumberOfParts(); part++) {
                         PointData[] points = polygon.getPointsOfPart(part);
-                        plotPolygonPoints(canvas, latLongRect, pixelSize, points, displayDensity);
+                        plotStates(canvas, latLongRect, pixelSize, points, displayDensity);
                     }
                 }
             }
@@ -287,21 +487,65 @@ public class BitmapRenderingIntent extends IntentService {
         }
     }
 
-    private void plotStation(Canvas canvas, LatLongRect latLongRect, Rect pixelSize,
-                             NexradStation station, boolean hasData, float displayDensity) {
+    private void drawCounties(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, float displayDensity) {
+        try {
+            InputStream is = this.getApplicationContext().getResources().openRawResource(R.raw.cb_2017_us_county_20m);
+            ShapeFileReader sr = new ShapeFileReader(is);
+            ShapeFileHeader hdr = sr.getHeader();
+            switch (hdr.getShapeType()) {
+                case POLYGON:
+                case POLYGON_Z:
+                    break;
+                default:
+                    throw new IllegalStateException("shape file of unsupported type encountered: "
+                            + hdr.getShapeType().toString());
+            }
+            AbstractShape s;
+            int shapeCount = 0;
+            int includedShapes = 0;
+            while ((s = sr.next()) != null) {
+                AbstractPolyShape polygon = (AbstractPolyShape)s;
+                shapeCount++;
+                if (!shapeExcluded(polygon, latLongRect)) {
+                    includedShapes++;
+                    for (int part = 0; part < polygon.getNumberOfParts(); part++) {
+                        PointData[] points = polygon.getPointsOfPart(part);
+                        plotCounties(canvas, latLongRect, pixelSize, points, displayDensity);
+                    }
+                }
+            }
+            Log.d(TAG,"total shapes: "+shapeCount+" included: "+includedShapes);
+            is.close();
+        } catch (Exception ex) {
+            Log.e(TAG,"error while reading outline shape file", ex);
+        }
+    }
+
+    private void plotStation(Canvas canvas, LatLongRect latLongRect, Rect pixelSize, NexradStation station, boolean hasData, float displayDensity) {
         Paint stationPaint = new Paint();
-        stationPaint.setTextSize(scalePixels(10, displayDensity));
+        stationPaint.setTextSize(scalePixels(12, displayDensity)); //was
         stationPaint.setStyle(Paint.Style.FILL);
 
         Paint brush = stationPaint;
         Point stationPoint = scaleCoordinate(station.getCoords(), latLongRect, pixelSize);
 
-        stationPaint.setColor(Color.DKGRAY);
-        stationPaint.setAlpha(128);
+        //stationPaint.setColor(Color.DKGRAY);
+        //stationPaint.setAlpha(128);
+
+        Resources resources = getApplicationContext().getResources();
+        Drawable rdaDrawable = resources.getDrawable(R.drawable.r88d);
+        Bitmap rdaicon = ((BitmapDrawable) rdaDrawable).getBitmap();
+        Bitmap rdaiconresized = Bitmap.createScaledBitmap(rdaicon, 43, 43, false);
+        brush.setAntiAlias(true);
+        brush.setSubpixelText(true);
+
+
         if (hasData) {
-            canvas.drawCircle(stationPoint.x, stationPoint.y, scalePixels(7, displayDensity), brush);
+            canvas.drawBitmap(rdaiconresized, stationPoint.x,stationPoint.y, brush);
+            //canvas.drawCircle(stationPoint.x, stationPoint.y, scalePixels(7, displayDensity), brush);
         } else {
             // Draw special symbol for station that has no data associated with it.
+            //DEAD RDAs! very good icon!
             canvas.drawCircle(stationPoint.x, stationPoint.y, scalePixels(7, displayDensity), brush);
             stationPaint.setColor(Color.WHITE);
             canvas.drawCircle(stationPoint.x, stationPoint.y, scalePixels(5, displayDensity), brush);
@@ -316,9 +560,8 @@ public class BitmapRenderingIntent extends IntentService {
             stationPaint.setStrokeWidth(defaultStrokeWidth);
         }
         stationPaint.setColor(Color.CYAN);
-        stationPaint.setAlpha(180);
-        canvas.drawText(station.getIdentifier(),
-                stationPoint.x + scalePixels(12, displayDensity), stationPoint.y + scalePixels(4, displayDensity), brush);
+        stationPaint.setAlpha(255);
+        canvas.drawText(station.getIdentifier(), stationPoint.x + scalePixels(12, displayDensity), stationPoint.y + scalePixels(4, displayDensity), brush);
     }
 
     /**
@@ -359,6 +602,8 @@ public class BitmapRenderingIntent extends IntentService {
             }
         };
         Paint productPaint = new Paint();
+        productPaint.setAntiAlias(true);
+        productPaint.setDither(true);
         NexradRenderer renderer = rendererInventory.getRenderer(product.getProductCode());
         if (renderer != null) {
             try {
@@ -415,4 +660,7 @@ public class BitmapRenderingIntent extends IntentService {
         Bitmap bitmap = Bitmap.createBitmap(region.width(), region.height(), Bitmap.Config.ARGB_4444);
         return bitmap;
     }
+
+
+
 }
